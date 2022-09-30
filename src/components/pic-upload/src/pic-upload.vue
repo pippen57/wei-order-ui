@@ -2,22 +2,23 @@
   <div>
     <el-upload
       class="pic-uploader-component"
-      :action="$http.adornUrl('/admin/file/upload/element')"
-      :headers="{Authorization: $cookie.get('Authorization')}"
+      :action="url"
       :show-file-list="false"
       :on-success="handleUploadSuccess"
       :before-upload="beforeAvatarUpload">
-      <img v-if="value" :src="resourcesUrl + value" class="pic">
+      <img v-if="value" :src=" value" class="pic">
       <i v-else class="el-icon-plus pic-uploader-icon"></i>
     </el-upload>
   </div>
 </template>
 
 <script>
+  import Cookies from 'js-cookie'
   export default {
+    name: 'PicUpload',
     data () {
       return {
-        resourcesUrl: process.env.VUE_APP_RESOURCES_URL
+        url:`${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
       }
     },
     props: {
@@ -29,7 +30,10 @@
     methods: {
       // 图片上传
       handleUploadSuccess (response, file, fileList) {
-        this.$emit('input', file.response)
+        if (response.code !== 0) {
+        return this.$message.error(response.msg)
+      }
+        this.$emit('input', response.data.src)
       },
       // 限制图片上传大小
       beforeAvatarUpload (file) {

@@ -1,8 +1,7 @@
 <template>
   <div>
     <el-upload
-      :action="$http.adornUrl('/admin/file/upload/element')"
-      :headers="{Authorization: $cookie.get('Authorization')}"
+      :action="url"
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
@@ -18,12 +17,14 @@
 </template>
 
 <script>
+    import Cookies from 'js-cookie'
   export default {
+    name: 'MulPicUpload',
     data () {
       return {
         dialogImageUrl: '',
         dialogVisible: false,
-        resourcesUrl: process.env.VUE_APP_RESOURCES_URL
+        url:`${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
       }
     },
     props: {
@@ -49,7 +50,7 @@
       // 图片上传
       handleUploadSuccess (response, file, fileList) {
         let pics = fileList.map(file => {
-          return file.response
+          return file.response.data.src
         }).join(',')
         this.$emit('input', pics)
       },

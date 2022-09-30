@@ -1,32 +1,37 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
-          <el-form-item label="店铺ID" prop="shopId">
-          <el-input v-model="dataForm.shopId" placeholder="店铺ID"></el-input>
+      <el-form-item v-if="dataForm.type !== 2"
+                    label="分类图片"
+                    prop="pic">
+        <pic-upload v-model="dataForm.pic"></pic-upload>
       </el-form-item>
-          <el-form-item label="父节点" prop="parentId">
-          <el-input v-model="dataForm.parentId" placeholder="父节点"></el-input>
+      <el-form-item v-if="dataForm.type !== 2"
+                    label="分类名称"
+                    prop="categoryName">
+        <el-input v-model="dataForm.categoryName"
+                  controls-position="right"
+                  :min="0"
+                  label="分类名称"></el-input>
       </el-form-item>
-          <el-form-item label="产品类目名称" prop="categoryName">
-          <el-input v-model="dataForm.categoryName" placeholder="产品类目名称"></el-input>
+      <el-form-item label="上级分类">
+        <ren-type-tree v-model="dataForm.pid" placeholder="上级分类" :type-name.sync="dataForm.parentName" :url="'/biz/category/list'"></ren-type-tree>
       </el-form-item>
-          <el-form-item label="类目图标" prop="icon">
-          <el-input v-model="dataForm.icon" placeholder="类目图标"></el-input>
+      <el-form-item v-if="dataForm.type !== 2"
+                    label="排序号"
+                    prop="seq">
+        <el-input-number v-model="dataForm.seq"
+                         controls-position="right"
+                         :min="0"
+                         label="排序号"></el-input-number>
       </el-form-item>
-          <el-form-item label="类目的显示图片" prop="pic">
-          <el-input v-model="dataForm.pic" placeholder="类目的显示图片"></el-input>
-      </el-form-item>
-          <el-form-item label="排序" prop="seq">
-          <el-input v-model="dataForm.seq" placeholder="排序"></el-input>
-      </el-form-item>
-          <el-form-item label="状态  0：停用   1：正常" prop="status">
-          <el-input v-model="dataForm.status" placeholder="状态  0：停用   1：正常"></el-input>
-      </el-form-item>
-              <el-form-item label="更新者" prop="updater">
-          <el-input v-model="dataForm.updater" placeholder="更新者"></el-input>
-      </el-form-item>
-          <el-form-item label="更新时间" prop="updateDate">
-          <el-input v-model="dataForm.updateDate" placeholder="更新时间"></el-input>
+      <el-form-item label="状态"
+                    size="mini"
+                    prop="status">
+        <el-radio-group v-model="dataForm.status">
+          <el-radio :label="0">下线</el-radio>
+          <el-radio :label="1">正常</el-radio>
+        </el-radio-group>
       </el-form-item>
       </el-form>
     <template slot="footer">
@@ -44,13 +49,14 @@ export default {
       visible: false,
       dataForm: {
         id: '',
-        shopId: '',
-        parentId: '',
+        shopId: '1',
+        pid: '0',
+        parentName:'',
         categoryName: '',
         icon: '',
         pic: '',
         seq: '',
-        status: '',
+        status: 1,
         creator: '',
         createDate: '',
         updater: '',
@@ -61,31 +67,12 @@ export default {
   computed: {
     dataRule () {
       return {
-        shopId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        parentId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
+    
         categoryName: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        icon: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        { required: true, message: '分类名称不能为空', trigger: 'blur' },
+          { pattern: /\s\S+|S+\s|\S/, message: '请输入正确的分类名称', trigger: 'blur' }
         ],
         pic: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        seq: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        status: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updater: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateDate: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

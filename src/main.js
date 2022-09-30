@@ -11,11 +11,17 @@ import http from '@/utils/request'
 import renRadioGroup from '@/components/ren-radio-group'
 import renSelect from '@/components/ren-select'
 import renDeptTree from '@/components/ren-dept-tree'
+import renTypeTree from '@/components/ren-type-tree'
 import renRegionTree from '@/components/ren-region-tree'
+import picUpload from '@/components/pic-upload'
+import mulPicUpload from '@/components/mul-pic-upload'
 import { hasPermission, getDictLabel } from '@/utils'
 import cloneDeep from 'lodash/cloneDeep'
 
 Vue.config.productionTip = false
+import Avue from '@smallwei/avue';
+import '@smallwei/avue/lib/index.css';
+Vue.use(Avue);
 
 Vue.use(Element, {
   size: 'default',
@@ -25,8 +31,10 @@ Vue.use(Element, {
 Vue.use(renRadioGroup)
 Vue.use(renSelect)
 Vue.use(renDeptTree)
+Vue.use(renTypeTree)
 Vue.use(renRegionTree)
-
+Vue.use(picUpload)
+Vue.use(mulPicUpload)
 // 挂载全局
 Vue.prototype.$http = http
 Vue.prototype.$hasPermission = hasPermission
@@ -41,3 +49,4 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+

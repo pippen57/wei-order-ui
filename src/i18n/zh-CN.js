@@ -257,6 +257,8 @@ t.user.validate = {}
 t.user.validate.confirmPassword = '确认密码与密码输入不一致'
 t.user.select = '选择用户'
 t.user.selecterror = '请选择一条记录'
+t.type = {}
+t.type.chooseerror = '请选择分类'
 
 
 export default t
