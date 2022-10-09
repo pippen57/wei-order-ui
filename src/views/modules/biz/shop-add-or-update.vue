@@ -25,15 +25,8 @@
         <el-input v-model="dataForm.tel" type="number" placeholder="店铺联系电话"></el-input>
       </el-form-item>
      
-      <!-- <el-form-item label="店铺所在纬度(可修改)" prop="shopLat">
-          <el-input v-model="dataForm.shopLat" placeholder="店铺所在纬度(可修改)"></el-input>
-      </el-form-item>
-          <el-form-item label="店铺所在经度(可修改)" prop="shopLng">
-          <el-input v-model="dataForm.shopLng" placeholder="店铺所在经度(可修改)"></el-input>
-      </el-form-item> -->
       <el-form-item label="店铺详细地址" prop="shopAddress">
         <avue-input-map  :params="params" placeholder="请选择地图" v-model="addr" ></avue-input-map>
-        <!-- <el-input v-model="dataForm.shopAddress" placeholder="店铺详细地址"></el-input> -->
       </el-form-item>
       <el-form-item label="店铺所在省份" prop="province">
         <el-input v-model="dataForm.province" placeholder="店铺所在省份（描述）"></el-input>
@@ -46,7 +39,6 @@
       </el-form-item>
 
       <el-form-item label="店铺相册" prop="shopPhotos">
-        <!-- <el-input v-model="dataForm.shopPhotos" placeholder="店铺相册"></el-input> -->
         <mul-pic-upload v-model="dataForm.shopPhotos"></mul-pic-upload>
       </el-form-item>
       <el-form-item label="营业时间段" prop="openTime">
@@ -110,6 +102,7 @@ export default {
   },
   watch: {
     addr (val) {
+      console.log(val);
       this.dataForm.shopLat = val[0]
       this.dataForm.shopLng = val[1]
       this.dataForm.shopAddress = val[2]
@@ -139,15 +132,7 @@ export default {
         tel: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        shopLat: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        shopLng: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        shopAddress: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
+
         province: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
