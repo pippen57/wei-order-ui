@@ -20,23 +20,26 @@
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="id" label="产品ID" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="pic" label="商品主图" header-align="center" align="center">
+          <template slot-scope="scope">
+            <el-image style="width: 100px; height: 60px" :src="scope.row.pic" :preview-src-list="[scope.row.pic]">
+            </el-image>
+          </template>
+        </el-table-column>
         <el-table-column prop="productName" label="商品名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="shopId" label="店铺id" header-align="center" align="center"></el-table-column>
         <el-table-column prop="originalPrice" label="原价" header-align="center" align="center"></el-table-column>
         <el-table-column prop="price" label="现价" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="point" label="简要描述,卖点等" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="content" label="详细描述" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="pic" label="商品主图" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="imgs" label="商品图片，以,分割" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="categoryId" label="商品分类" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="point" label="卖点" header-align="center" align="center"></el-table-column>
+        
         <el-table-column prop="soldNum" label="销量" header-align="center" align="center"></el-table-column>
         <el-table-column prop="totalStocks" label="总库存" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="status" label="默认是1，表示正常状态, -1表示删除, 0下架" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="creator" label="创建者" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="status" label="状态" header-align="center" align="center">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status===1">上架</el-tag>
+            <el-tag type="danger" v-if="scope.row.status===0">下架</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="createDate" label="创建时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updater" label="更新者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateDate" label="更新时间" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('biz:product:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>

@@ -1,49 +1,43 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
-          <el-form-item label="商品名称" prop="productName">
-          <el-input v-model="dataForm.productName" placeholder="商品名称"></el-input>
+  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')"  :close-on-click-modal="false"
+    :close-on-press-escape="false">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()"
+      :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
+      <el-form-item label="商品主图" prop="pic">
+        <pic-upload v-model="dataForm.pic"></pic-upload>
       </el-form-item>
-          <el-form-item label="店铺id" prop="shopId">
-          <el-input v-model="dataForm.shopId" placeholder="店铺id"></el-input>
+      <el-form-item label="商品图片" prop="imgs">
+        <mul-pic-upload v-model="dataForm.imgs"></mul-pic-upload>
       </el-form-item>
-          <el-form-item label="原价" prop="originalPrice">
-          <el-input v-model="dataForm.originalPrice" placeholder="原价"></el-input>
+      <el-form-item label="商品名称" prop="productName">
+        <el-input v-model="dataForm.productName" placeholder="商品名称"></el-input>
       </el-form-item>
-          <el-form-item label="现价" prop="price">
-          <el-input v-model="dataForm.price" placeholder="现价"></el-input>
+      <el-form-item label="原价" prop="originalPrice">
+        <el-input-number v-model="dataForm.originalPrice" :min="0" controls-position="right" :precision="2" :step="0.1" style="width:100%"></el-input-number>
       </el-form-item>
-          <el-form-item label="简要描述,卖点等" prop="point">
-          <el-input v-model="dataForm.point" placeholder="简要描述,卖点等"></el-input>
+      <el-form-item label="现价" prop="price">
+        <el-input-number v-model="dataForm.price" :min="0" controls-position="right" :precision="2" :step="0.1" style="width:100%"></el-input-number>
       </el-form-item>
-          <el-form-item label="详细描述" prop="content">
-          <el-input v-model="dataForm.content" placeholder="详细描述"></el-input>
+      <el-form-item label="卖点" prop="point">
+        <el-input  v-model="dataForm.point" placeholder="简要描述,卖点等"></el-input>
       </el-form-item>
-          <el-form-item label="商品主图" prop="pic">
-          <el-input v-model="dataForm.pic" placeholder="商品主图"></el-input>
+      <el-form-item label="详细描述" prop="content">
+        <el-input type="textarea" v-model="dataForm.content" placeholder="详细描述"></el-input>
+      </el-form-item>     
+      <el-form-item label="商品分类" prop="categoryId">
+        <ren-type-tree v-model="dataForm.categoryId" placeholder="商品分类" :type-name.sync="dataForm.categoryName"
+          :url="'/biz/category/list'"></ren-type-tree>
       </el-form-item>
-          <el-form-item label="商品图片，以,分割" prop="imgs">
-          <el-input v-model="dataForm.imgs" placeholder="商品图片，以,分割"></el-input>
+      <el-form-item label="总库存" prop="totalStocks">
+        <el-input-number v-model="dataForm.totalStocks" controls-position="right" :min="0"  label="总库存" style="width:100%"> </el-input-number>
       </el-form-item>
-          <el-form-item label="商品分类" prop="categoryId">
-          <el-input v-model="dataForm.categoryId" placeholder="商品分类"></el-input>
+      <el-form-item label="商品状态" prop="status">
+        <el-radio-group v-model="dataForm.status">
+          <el-radio :label="0">下架</el-radio>
+          <el-radio :label="1">正常</el-radio>
+        </el-radio-group>
       </el-form-item>
-          <el-form-item label="销量" prop="soldNum">
-          <el-input v-model="dataForm.soldNum" placeholder="销量"></el-input>
-      </el-form-item>
-          <el-form-item label="总库存" prop="totalStocks">
-          <el-input v-model="dataForm.totalStocks" placeholder="总库存"></el-input>
-      </el-form-item>
-          <el-form-item label="默认是1，表示正常状态, -1表示删除, 0下架" prop="status">
-          <el-input v-model="dataForm.status" placeholder="默认是1，表示正常状态, -1表示删除, 0下架"></el-input>
-      </el-form-item>
-              <el-form-item label="更新者" prop="updater">
-          <el-input v-model="dataForm.updater" placeholder="更新者"></el-input>
-      </el-form-item>
-          <el-form-item label="更新时间" prop="updateDate">
-          <el-input v-model="dataForm.updateDate" placeholder="更新时间"></el-input>
-      </el-form-item>
-      </el-form>
+    </el-form>
     <template slot="footer">
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
@@ -54,13 +48,14 @@
 <script>
 import debounce from 'lodash/debounce'
 export default {
-  data () {
+  data() {
     return {
       visible: false,
+      typeList:[],
       dataForm: {
         id: '',
         productName: '',
-        shopId: '',
+        shopId: 1,
         originalPrice: '',
         price: '',
         point: '',
@@ -68,9 +63,10 @@ export default {
         pic: '',
         imgs: '',
         categoryId: '',
+        categoryName:'',
         soldNum: '',
         totalStocks: '',
-        status: '',
+        status: 1,
         creator: '',
         createDate: '',
         updater: '',
@@ -79,55 +75,32 @@ export default {
     }
   },
   computed: {
-    dataRule () {
+    dataRule() {
       return {
         productName: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        shopId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        originalPrice: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         price: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        point: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
+        
         content: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         pic: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        imgs: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         categoryId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        soldNum: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        totalStocks: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         status: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updater: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateDate: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
-    init () {
+    init() {
       this.visible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
@@ -137,7 +110,7 @@ export default {
       })
     },
     // 获取信息
-    getInfo () {
+    getInfo() {
       this.$http.get(`/biz/product/${this.dataForm.id}`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.msg)
@@ -146,7 +119,7 @@ export default {
           ...this.dataForm,
           ...res.data
         }
-      }).catch(() => {})
+      }).catch(() => { })
     },
     // 表单提交
     dataFormSubmitHandle: debounce(function () {
@@ -167,7 +140,7 @@ export default {
               this.$emit('refreshDataList')
             }
           })
-        }).catch(() => {})
+        }).catch(() => { })
       })
     }, 1000, { 'leading': true, 'trailing': false })
   }

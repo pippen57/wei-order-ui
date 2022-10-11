@@ -39,7 +39,7 @@
         if (this.value) {
           let imageArray = this.value.split(',')
           for (let i = 0; i < imageArray.length; i++) {
-            res.push({url: this.resourcesUrl + imageArray[i], response: imageArray[i]})
+            res.push({url: imageArray[i], response: imageArray[i]})
           }
         }
         this.$emit('input', this.value)
@@ -49,6 +49,7 @@
     methods: {
       // 图片上传
       handleUploadSuccess (response, file, fileList) {
+        console.log(response,file,fileList);
         let pics = fileList.map(file => {
           return file.response.data.src
         }).join(',')
@@ -60,9 +61,9 @@
         if (!isJPG) {
           this.$message.error('上传图片只能是jpeg/jpg/png/gif 格式!')
         }
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 5
         if (!isLt2M) {
-          this.$message.error('上传图片大小不能超过 2MB!')
+          this.$message.error('上传图片大小不能超过 5MB!')
         }
         return isLt2M && isJPG
       },

@@ -1,39 +1,28 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
-      <el-form-item v-if="dataForm.type !== 2"
-                    label="分类图片"
-                    prop="pic">
+  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false"
+    :close-on-press-escape="false">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()"
+      :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
+      <el-form-item v-if="dataForm.type !== 2" label="分类图片" prop="pic">
         <pic-upload v-model="dataForm.pic"></pic-upload>
       </el-form-item>
-      <el-form-item v-if="dataForm.type !== 2"
-                    label="分类名称"
-                    prop="categoryName">
-        <el-input v-model="dataForm.categoryName"
-                  controls-position="right"
-                  :min="0"
-                  label="分类名称"></el-input>
+      <el-form-item v-if="dataForm.type !== 2" label="分类名称" prop="categoryName">
+        <el-input v-model="dataForm.categoryName" controls-position="right" :min="0" label="分类名称"></el-input>
       </el-form-item>
       <el-form-item label="上级分类">
-        <ren-type-tree v-model="dataForm.pid" placeholder="上级分类" :type-name.sync="dataForm.parentName" :url="'/biz/category/list'"></ren-type-tree>
+        <ren-type-tree v-model="dataForm.pid" placeholder="上级分类" :type-name.sync="dataForm.parentName"
+          :url="'/biz/category/list'"></ren-type-tree>
       </el-form-item>
-      <el-form-item v-if="dataForm.type !== 2"
-                    label="排序号"
-                    prop="seq">
-        <el-input-number v-model="dataForm.seq"
-                         controls-position="right"
-                         :min="0"
-                         label="排序号"></el-input-number>
+      <el-form-item v-if="dataForm.type !== 2" label="排序号" prop="seq">
+        <el-input-number v-model="dataForm.seq" controls-position="right" :min="0" label="排序号"></el-input-number>
       </el-form-item>
-      <el-form-item label="状态"
-                    size="mini"
-                    prop="status">
+      <el-form-item label="状态" size="mini" prop="status">
         <el-radio-group v-model="dataForm.status">
           <el-radio :label="0">下线</el-radio>
           <el-radio :label="1">正常</el-radio>
         </el-radio-group>
       </el-form-item>
-      </el-form>
+    </el-form>
     <template slot="footer">
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
@@ -44,14 +33,14 @@
 <script>
 import debounce from 'lodash/debounce'
 export default {
-  data () {
+  data() {
     return {
       visible: false,
       dataForm: {
         id: '',
         shopId: '1',
         pid: '0',
-        parentName:'',
+        parentName: '',
         categoryName: '',
         icon: '',
         pic: '',
@@ -65,11 +54,11 @@ export default {
     }
   },
   computed: {
-    dataRule () {
+    dataRule() {
       return {
-    
+
         categoryName: [
-        { required: true, message: '分类名称不能为空', trigger: 'blur' },
+          { required: true, message: '分类名称不能为空', trigger: 'blur' },
           { pattern: /\s\S+|S+\s|\S/, message: '请输入正确的分类名称', trigger: 'blur' }
         ],
         pic: [
@@ -79,7 +68,7 @@ export default {
     }
   },
   methods: {
-    init () {
+    init() {
       this.visible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
@@ -89,7 +78,7 @@ export default {
       })
     },
     // 获取信息
-    getInfo () {
+    getInfo() {
       this.$http.get(`/biz/category/${this.dataForm.id}`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.msg)
@@ -98,7 +87,7 @@ export default {
           ...this.dataForm,
           ...res.data
         }
-      }).catch(() => {})
+      }).catch(() => { })
     },
     // 表单提交
     dataFormSubmitHandle: debounce(function () {
@@ -119,7 +108,7 @@ export default {
               this.$emit('refreshDataList')
             }
           })
-        }).catch(() => {})
+        }).catch(() => { })
       })
     }, 1000, { 'leading': true, 'trailing': false })
   }

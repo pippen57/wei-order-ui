@@ -85,7 +85,6 @@ export default {
         if (res.code !== 0) {
           return this.$message.error(res.msg)
         }
-        console.log(res);
         this.typeList = res.data
         this.$nextTick(() => {
           this.$refs.tree.setCurrentKey(id)
