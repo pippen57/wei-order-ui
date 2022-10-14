@@ -1,6 +1,7 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-biz__product}">
+      <div v-if="!addOrUpdateVisible">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
           <el-input v-model="dataForm.id" placeholder="id" clearable></el-input>
@@ -56,8 +57,9 @@
         @size-change="pageSizeChangeHandle"
         @current-change="pageCurrentChangeHandle">
       </el-pagination>
+    </div>
       <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @addorUp="refreshData" @refreshDataList="getDataList"></add-or-update>
     </div>
   </el-card>
 </template>
@@ -83,6 +85,11 @@ export default {
   },
   components: {
     AddOrUpdate
-  }
+  },
+  methods: {
+    refreshData() {
+      this.addOrUpdateVisible = false
+    }
+  },
 }
 </script>
