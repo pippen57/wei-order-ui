@@ -30,6 +30,15 @@
           :url="'/biz/category/list'"></ren-type-tree>
       </el-form-item>
       <el-form-item label="SKU">
+        <div v-for="item in propSelect" :key="item.id">
+        <el-select v-model="item.id" multiple placeholder="请选择" @change="propOptChange">
+          <el-option
+            v-for="item in propData"
+            :key="item.id"
+            :label="item.propName"
+            :value="item.id">
+          </el-option>
+        </el-select>
         <el-select v-model="propOpt" multiple placeholder="请选择" @change="propOptChange">
           <el-option
             v-for="item in propData"
@@ -38,18 +47,7 @@
             :value="item.id">
           </el-option>
         </el-select>
-
-        <div style="margin-top:10px" v-for="item in propOptObj" :key="item.id">
-          {{item.propName}}:
-          <el-tag
-            v-for="tag in item.propValue"
-            :key="tag.id"
-            closable style="display: inline-block;
-  margin: 0 5px 5px 0;">
-            {{tag.propValue}}
-
-          </el-tag>
-        </div>
+      </div>
       </el-form-item>
       <el-form-item label="总库存" prop="totalStocks">
         <el-input-number v-model="dataForm.totalStocks" controls-position="right" :min="0"  label="总库存" > </el-input-number>
@@ -80,6 +78,19 @@ export default {
       propData:{},
       propOpt:null,
       propOptObj:null,
+
+      propSelect:[
+        {
+          id:null,
+          name:'',
+          children: [
+            {
+              id: null,
+              name:''
+            }
+          ]
+        }
+      ],
       dataForm: {
         id: '',
         productName: '',
