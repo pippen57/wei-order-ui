@@ -76,11 +76,14 @@ export default {
           this.$message.error("规格值不能为空")
           return false
         }
+        console.log(this.propValues);
+        this.dataForm.propValue=[]
         this.propValues.forEach(element => {
           this.dataForm.propValue.push({
             'propValue':element
           })
         });
+        console.log(this.dataForm);
         this.$http[!this.dataForm.id ? 'post' : 'put']('/biz/productprop/', this.dataForm).then(({ data: res }) => {
           if (res.code !== 0) {
             return this.$message.error(res.msg)

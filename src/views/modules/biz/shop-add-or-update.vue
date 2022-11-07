@@ -6,6 +6,9 @@
       <el-form-item label="店铺logo" prop="shopLogo">
         <pic-upload v-model="dataForm.shopLogo"></pic-upload>
       </el-form-item>
+      <el-form-item label="店铺相册" prop="shopPhotos">
+        <mul-pic-upload v-model="dataForm.shopPhotos"></mul-pic-upload>
+      </el-form-item>
       <el-form-item label="店铺名称" prop="shopName">
         <el-input v-model="dataForm.shopName" placeholder="店铺名称(数字、中文，英文(可混合，不可有特殊字符)，可修改)、不唯一"></el-input>
       </el-form-item>
@@ -22,11 +25,7 @@
         <el-input v-model="dataForm.intro"  type="textarea" placeholder="店铺简介(可修改)"></el-input>
       </el-form-item>
       <el-form-item label="店铺电话" prop="tel">
-        <el-input v-model="dataForm.tel" type="number" placeholder="店铺联系电话"></el-input>
-      </el-form-item>
-     
-      <el-form-item label="店铺详细地址" prop="shopAddress">
-        <avue-input-map  :params="params" placeholder="请选择地图" v-model="addr" ></avue-input-map>
+        <el-input v-model="dataForm.tel"  placeholder="店铺联系电话"></el-input>
       </el-form-item>
       <el-form-item label="店铺所在省份" prop="province">
         <el-input v-model="dataForm.province" placeholder="店铺所在省份（描述）"></el-input>
@@ -37,10 +36,13 @@
       <el-form-item label="店铺所在区域" prop="area">
         <el-input v-model="dataForm.area" placeholder="店铺所在区域（描述）"></el-input>
       </el-form-item>
-
-      <el-form-item label="店铺相册" prop="shopPhotos">
-        <mul-pic-upload v-model="dataForm.shopPhotos"></mul-pic-upload>
+      <el-form-item label="店铺详细地址" prop="shopAddress">
+        <el-input v-model="dataForm.shopAddress" placeholder="店铺详细地址（描述）"></el-input>
       </el-form-item>
+      <el-form-item label="地址经纬度选择" prop="addr">
+        <avue-input-map  :params="params" placeholder="请选择地图" v-model="addr" ></avue-input-map>
+      </el-form-item>
+
       <el-form-item label="营业时间段" prop="openTime">
         <el-input v-model="dataForm.openTime" placeholder="每天营业时间段"></el-input>
       </el-form-item>
@@ -73,7 +75,7 @@ export default {
           // zoomEnable: false,
           // dragEnable: false,
         },
-        addr:[ 113.10235504165291, 41.03624227495205, "内蒙古自治区乌兰察布市集宁区新体路街道顺达源广告传媒" ] ,
+        addr:[ ] ,
       dataForm: {
         id: '',
         shopName: '',
@@ -105,7 +107,6 @@ export default {
       console.log(val);
       this.dataForm.shopLat = val[0]
       this.dataForm.shopLng = val[1]
-      this.dataForm.shopAddress = val[2]
     }
   },
   computed: {
@@ -114,21 +115,13 @@ export default {
         shopName: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        userId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         shopOwner: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         mobile: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        shopNotice: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        intro: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
+      
         tel: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
@@ -142,22 +135,16 @@ export default {
         area: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        shopLogo: [
+        shopAddress:[
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        shopPhotos: [
+        shopLogo: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         openTime: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         shopStatus: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updater: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateDate: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
@@ -183,6 +170,7 @@ export default {
           ...this.dataForm,
           ...res.data
         }
+        this.addr=[res.data.shopLat,res.data.shopLng,res.data.shopAddress]
       }).catch(() => { })
     },
     // 表单提交
@@ -207,53 +195,6 @@ export default {
         }).catch(() => { })
       })
     }, 1000, { 'leading': true, 'trailing': false }),
-    onSearchResult(pois) {
-      //搜索
-      let latSum = 0;
-      let lngSum = 0;
-      let that = this;
-      if (pois && pois.length > 0) {
-        //如果长度为1则无需转化
-        let poi = pois[0];
-        let lng = poi["lng"];
-        let lat = poi["lat"];
-        that.center = [lng, lat];
-        that.zoom = 18;
-        that.content = poi.name;
-        that.searchResult.address = poi.address;
-        that.searchResult.latitude = poi.lat;
-        that.searchResult.longitude = poi.lng;
-
-        that.form.lon = lng;
-        that.form.lat = lat;
-
-        that.getAddress(that.center);
-      } else {
-        that.searchResult = [];
-      }
-    },
-
-    // 获取详细地址
-    getAddress(center) {
-      let _this = this;
-      let geocoder = new AMap.Geocoder({});
-
-      geocoder.getAddress(center, function (status, result) {
-        if (status === "complete" && result.info === "OK") {
-          let obj = result.regeocode.addressComponent;
-
-          let locationName =
-            obj.province +
-            obj.city +
-            obj.district +
-            obj.township +
-            obj.street +
-            obj.streetNumber;
-
-          _this.form.address = locationName;
-        }
-      });
-    }
   }
 }
 </script>

@@ -67,6 +67,7 @@ export default {
       mixinViewModuleOptions: {
         getDataListURL: '/biz/category/list',
         deleteURL: '/biz/category',
+        deleteIsBatch: true
       },
       dataForm: {
         id: ''

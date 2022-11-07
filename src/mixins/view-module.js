@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import qs from 'qs'
+import store from '@/store'
 export default {
   data () {
     /* eslint-disable */
@@ -132,7 +133,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http.delete(
-          `${this.mixinViewModuleOptions.deleteURL}${this.mixinViewModuleOptions.deleteIsBatch ? '' : '/' + id}`,
+          `${this.mixinViewModuleOptions.deleteURL}${this.mixinViewModuleOptions.deleteIsBatch ? '' : '/' + id}?shopId=${store.state.shop.shop.id}`,
           this.mixinViewModuleOptions.deleteIsBatch ? {
             'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinViewModuleOptions.deleteIsBatchKey])
           } : {}

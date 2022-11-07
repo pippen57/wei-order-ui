@@ -16,6 +16,11 @@
       <el-form-item prop="realName" :label="$t('user.realName')">
         <el-input v-model="dataForm.realName" :placeholder="$t('user.realName')"></el-input>
       </el-form-item>
+      <el-form-item prop="shopId" label="店铺" class="role-list">
+        <el-select v-model="dataForm.shopId"  placeholder="请选择您的店铺">
+          <el-option v-for="item in $store.state.shop.shopList" :key="item.id" :label="item.shopName" :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item prop="gender" :label="$t('user.gender')">
         <ren-radio-group v-model="dataForm.gender" dict-type="gender"></ren-radio-group>
       </el-form-item>
@@ -58,6 +63,7 @@ export default {
         username: '',
         // deptId: '',
         // deptName: '',
+        shopId:'',
         password: '',
         confirmPassword: '',
         realName: '',
@@ -109,6 +115,9 @@ export default {
           { validator: validateConfirmPassword, trigger: 'blur' }
         ],
         realName: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        shopId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         email: [

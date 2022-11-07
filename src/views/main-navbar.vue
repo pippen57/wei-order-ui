@@ -16,15 +16,18 @@
         </el-menu-item>
       </el-menu>
       <el-menu class="aui-navbar__menu" mode="horizontal">
-        <el-menu-item index="2">
-          <a href="https://www.renren.io/" target="_blank">
-            <svg class="icon-svg aui-navbar__icon-menu" aria-hidden="true"><use xlink:href="#icon-earth"></use></svg>
-          </a>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <a href="https://gitee.com/renrenio/renren-security" target="_blank">
-            <svg class="icon-svg aui-navbar__icon-menu" aria-hidden="true"><use xlink:href="#gitee"></use></svg>
-          </a>
+        <el-menu-item index="2" class="aui-navbar__avatar" v-if="$store.state.user.superAdmin==1">
+          <el-dropdown placement="bottom" :show-timeout="0">
+            <span class="el-dropdown-link">
+              <img src="~@/assets/img/50-shop.png">
+              <span v-if="$store.state.shop.shop.shopName">{{ $store.state.shop.shop.shopName }}</span>
+              <span v-else>请先创建店铺</span>
+              <i class="el-icon-arrow-down"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-for="item in shopList" :key="item.id" @click.native="updateSelectShop(item)">{{ item.shopName }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-menu-item>
         <el-menu-item index="4" @click="fullscreenHandle()">
           <svg class="icon-svg aui-navbar__icon-menu" aria-hidden="true"><use xlink:href="#icon-fullscreen"></use></svg>
@@ -57,11 +60,18 @@ export default {
   data () {
     return {
       updatePasswordVisible: false,
-      messageTip: false
+      messageTip: false,
+      shopList:[]
     }
   },
   components: {
     UpdatePassword
+  },
+  created(){
+    if(this.$store.state.user.superAdmin==1){
+      this.propListHandle();
+    }
+
   },
   methods: {
     // 全屏
@@ -81,6 +91,23 @@ export default {
       this.$nextTick(() => {
         this.$refs.updatePassword.init()
       })
+    },
+    propListHandle(){
+      this.$http.get('/biz/shop/all').then(({ data: res }) => {
+        console.log(res);
+        this.shopList = res.data
+        if(res.data.length>0){
+          this.$store.commit('shop/updateShopList',res.data)
+          if(!this.$store.state.shop.shop.id){
+            this.$store.commit('shop/updateShop', res.data[0])
+          }
+        }else {
+          
+        }
+      })
+    },
+    updateSelectShop(e){
+        this.$store.commit('shop/updateShop', e)
     },
     // 退出
     logoutHandle () {

@@ -4,7 +4,7 @@ import router from '@/router'
 import qs from 'qs'
 import { clearLoginInfo } from '@/utils'
 import isPlainObject from 'lodash/isPlainObject'
-
+import store from '@/store'
 const http = axios.create({
   baseURL: window.SITE_CONFIG['apiURL'],
   timeout: 1000 * 180,
@@ -18,7 +18,7 @@ http.interceptors.request.use(config => {
   config.headers['Accept-Language'] = Cookies.get('language') || 'zh-CN'
   config.headers['token'] = Cookies.get('token') || ''
   // 默认参数
-  var defaults = {}
+  var defaults = {'shopId':store.state.shop.shop.id}
   // 防止缓存，GET请求默认带_t参数
   if (config.method === 'get') {
     config.params = {

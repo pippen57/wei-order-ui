@@ -60,9 +60,6 @@ export default {
         categoryName: [
           { required: true, message: '分类名称不能为空', trigger: 'blur' },
           { pattern: /\s\S+|S+\s|\S/, message: '请输入正确的分类名称', trigger: 'blur' }
-        ],
-        pic: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
     }
@@ -95,6 +92,8 @@ export default {
         if (!valid) {
           return false
         }
+        this.dataForm.shopId = this.$store.state.shop.shop.id
+      
         this.$http[!this.dataForm.id ? 'post' : 'put']('/biz/category/', this.dataForm).then(({ data: res }) => {
           if (res.code !== 0) {
             return this.$message.error(res.msg)
