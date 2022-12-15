@@ -105,8 +105,8 @@ export default {
   watch: {
     addr (val) {
       console.log(val);
-      this.dataForm.shopLat = val[1]
-      this.dataForm.shopLng = val[0]
+      this.dataForm.shopLat = val[0]
+      this.dataForm.shopLng = val[1]
     }
   },
   computed: {

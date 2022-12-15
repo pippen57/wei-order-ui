@@ -7,7 +7,7 @@
             :close-on-click-modal="false"
             :close-on-press-escape="false"
         >
-        <div v-for="( item, index)  in tags" :key="item.id">
+        <div v-for="(item, index)  in tags" :key="item.id">
         <div type="success">{{item.propName}}:</div>
             <el-radio-group v-for="i in item.propValue" :key="i.id" v-model="radio">
                 <el-radio :label="{id:i.id,idx:index}">{{i.propValue}}</el-radio>

@@ -158,6 +158,8 @@ export default {
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields();
         this.getProp();
+        this.$refs.skuTag.init([])
+        this.$refs.skuTable.init()
         if (this.dataForm.id) {
           this.getInfo();
         }
