@@ -1,13 +1,8 @@
-## renren-ui
-- renren-ui基于vue、element-ui构建开发，实现 【[renren-security](https://gitee.com/renrenio/renren-security)】 后台管理前端功能，提供一套更优的前端解决方案
-- 前后端分离，通过token进行数据交互，可独立部署
-- 动态菜单，通过菜单管理统一管理访问路由
+## wei-order-ui
+
+wei-order-ui 是基于[renren-security](https://gitee.com/renrenio/renren-security) 实现的微信点餐系统管理端页面。这个文档也基本是按照[renren-security](https://gitee.com/renrenio/renren-security)文档操作编写的。我们只是用过[renren-security](https://gitee.com/renrenio/renren-security) 这个项目基础上增加了微信点餐功能。
+
 - 后端地址：https://gitee.com/renrenio/renren-security
-- 演示地址：[http://demo.open.renren.io/renren-security](http://demo.open.renren.io/renren-security) (账号密码：admin/admin)
-
-<br> 
-
-![输入图片说明](public/1.png)
 
 ## 安装
 
@@ -84,21 +79,11 @@ window.SITE_CONFIG['apiURL'] = 'http://localhost:8080/renren-admin';
 ```
 <br>
 
-## 如何交流、反馈、参与贡献？
-- 开发文档：https://www.renren.io/guide/security
-- 官方社区：https://www.renren.io/community
-- Gitee仓库：https://gitee.com/renrenio/renren-ui
-- [人人开源](https://www.renren.io)：https://www.renren.io
-- 如需关注项目最新动态，请Watch、Star项目，同时也是对项目最好的支持
-- 技术讨论、二次开发等咨询、问题和建议，请移步到官方社区，我会在第一时间进行解答和回复！
-- 微信扫码并关注【人人开源】，获得项目最新动态及更新提醒<br>
+## 微信交流
 
-  <br>
-
-## 微信交流群
-我们提供了微信交流群，扫码下面的二维码，关注【人人开源】公众号，回复【加群】，即可根据提示加入微信群！
+扫码下面的二维码，，备注【皮蓬】加快通过速度。
 <br><br>
-![输入图片说明](public/wechat.jpg)
+<img src="public/weixin.jpeg" alt="WechatIMG168" style="zoom:33%;" />
 
 <br>
 <br>

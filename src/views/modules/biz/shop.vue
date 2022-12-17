@@ -35,7 +35,7 @@
         <el-table-column prop="shopStatus" label="店铺状态" header-align="center" align="center">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.shopStatus==1">营业中</el-tag>
-            <el-tag v-else-if="scope.row.shopStatus==0" type="danger">停业中</el-tag>
+            <el-tag v-else-if="scope.row.shopStatus==0" type="danger">休息中</el-tag>
             <el-tag v-else type="info">未开通</el-tag>
           </template>
         </el-table-column>
