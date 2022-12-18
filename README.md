@@ -2,8 +2,15 @@
 
 wei-order-ui 是基于[renren-security](https://gitee.com/renrenio/renren-security) 实现的微信点餐系统管理端页面。这个文档也基本是按照[renren-security](https://gitee.com/renrenio/renren-security)文档操作编写的。我们只是用过[renren-security](https://gitee.com/renrenio/renren-security) 这个项目基础上增加了微信点餐功能。
 
-- 后端地址：https://gitee.com/renrenio/renren-security
-
+- 后端地址：
+  - Github: https://github.com/pippen57/wei-order
+  - Gitee: https://gitee.com/pippen57/wei-order
+- 后端UI:
+  - Github: https://github.com/pippen57/wei-order-ui
+  - Gitee: https://gitee.com/pippen57/wei-order-ui
+- 小程序：
+  - Github: https://github.com/pippen57/wei-order-mini
+  - Gitee: https://gitee.com/pippen57/wei-order-mini
 ## 安装
 
 您需要提前在本地安装[Node.js](https://nodejs.org/en/)，版本号为：[12.x、14.x]，再使用[Git](https://git-scm.com/)克隆项目或者直接下载项目后，然后通过`终端命令行`执行以下命令。
